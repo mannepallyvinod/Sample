@@ -6,6 +6,16 @@ pipeline {
                 echo 'Building the app'
             }
         }
+        stage ('Test') {
+            when {
+                expression {
+                    params.executeTests
+                }
+            }
+            steps {
+                echo "Testing the app"
+            }
+        }
         stage('Approval') {
             when {
                 expression { env.APPROVE_EMAIL == 'true' }
@@ -13,6 +23,14 @@ pipeline {
             steps {
                 echo 'Sending approval email...'
                 script {
+                    // Send email to specific address
+                    emailext body: "Please approve the release.",
+                        subject: "Release Approval Request",
+                        to: "vinod199733@gmail.com",
+                        replyTo: "vinod199733@gmail.com",
+                        mimeType: "text/html"
+                    
+                    // Wait for approval
                     def approval = input(
                         id: 'approval', 
                         message: 'Do you approve the release?', 
@@ -24,16 +42,6 @@ pipeline {
                         error('Release approval not granted.')
                     }
                 }
-            }
-        }
-        stage ('Test') {
-            when {
-                expression {
-                    params.executeTests
-                }
-            }
-            steps {
-                echo "Testing the app"
             }
         }
         stage ('Deploy') {
