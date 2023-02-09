@@ -1,16 +1,22 @@
 pipeline {
     agent any
-    environment {
-    NEW_VERSION = '1.3.0'
+    parameters {
+        choice(name: 'version', choices: ['1.1.0', '1.2.0', '1.3.0'], description: 'Test the version')
+        booleanParam(name: 'executeTests', defaultValue: 'true', description: '')
     }
     stages {
         stage ('Build') {
             steps {
                 echo 'Building the app'
-                echo "Building the ${NEW_VERSION} app"
+                echo "Building the ${version} app"
             }
         }
         stage ('Test') {
+            when {
+                expression {
+                    params.executeTests
+                }
+            }
             steps {
                 echo "Testing the ${NEW_VERSION} app"
             }
@@ -18,6 +24,7 @@ pipeline {
         stage ('Deploy') {
             steps {
                 echo 'Deploying the app'
+                echo "Deploying the version ${version}"
             }
         }
     }
