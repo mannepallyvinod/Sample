@@ -1,14 +1,29 @@
 pipeline {
     agent any
-    parameters {
-        choice(name: 'version', choices: ['1.1.0', '1.2.0', '1.3.0'], description: 'Test the version')
-        booleanparam(name: 'executeTests', defaultValue: 'true', description: '')
-    }
     stages {
         stage ('Build') {
             steps {
                 echo 'Building the app'
-                echo "Building the ${version} app"
+            }
+        }
+        stage('Approval') {
+            when {
+                expression { env.APPROVE_EMAIL == 'true' }
+            }
+            steps {
+                echo 'Sending approval email...'
+                script {
+                    def approval = input(
+                        id: 'approval', 
+                        message: 'Do you approve the release?', 
+                        parameters: [
+                            [$class: 'BooleanParameterDefinition', name: 'approve', type: 'Boolean', defaultValue: false, description: 'Check this box to approve']
+                        ]
+                    )
+                    if (!approval.approve) {
+                        error('Release approval not granted.')
+                    }
+                }
             }
         }
         stage ('Test') {
@@ -18,13 +33,12 @@ pipeline {
                 }
             }
             steps {
-                echo "Testing the ${NEW_VERSION} app"
+                echo "Testing the app"
             }
         }
         stage ('Deploy') {
             steps {
                 echo 'Deploying the app'
-                echo "Deploying the version ${version}"
             }
         }
     }
