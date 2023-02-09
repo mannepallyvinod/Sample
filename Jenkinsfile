@@ -35,7 +35,7 @@ pipeline {
                         id: 'approval', 
                         message: 'Do you approve the release?', 
                         parameters: [
-                            [$class: 'BooleanParameterDefinition', name: 'approve', type: 'Boolean', defaultValue: false, description: 'Check this box to approve']
+                            [$class: 'BooleanParameterDefinition', name: 'approve', type: 'Boolean', defaultValue: true, description: 'Check this box to approve']
                         ]
                     )
                     if (!approval.approve) {
