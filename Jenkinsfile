@@ -7,12 +7,12 @@ pipeline {
         stage ('Build') {
             steps {
                 echo 'Building the app'
-                echo "Building the ${NEW_VERSION}"
+                echo "Building the ${NEW_VERSION} app"
             }
         }
         stage ('Test') {
             steps {
-                echo 'Testing the app'
+                echo "Testing the ${NEW_VERSION} app"
             }
         }
         stage ('Deploy') {
