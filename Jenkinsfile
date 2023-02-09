@@ -7,11 +7,6 @@ pipeline {
             }
         }
         stage ('Test') {
-            when {
-                expression {
-                    params.executeTests
-                }
-            }
             steps {
                 echo "Testing the app"
             }
