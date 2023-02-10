@@ -27,10 +27,10 @@ pipeline {
                         id: 'approval', 
                         message: 'Do you approve the release?', 
                         parameters: [
-                            [$class: 'BooleanParameterValue', name: 'approve', defaultValue: false, description: 'Check this box to approve']
+                            [$class: 'ChoiceParameterValue', name: 'approve', choices: ['Yes', 'No'], description: 'Select Yes to approve']
                         ]
                     )
-                    if (!approval.approve) {
+                    if (approval.approve != 'Yes') {
                         error('Release approval not granted.')
                     }
                 }
