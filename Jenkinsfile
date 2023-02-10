@@ -27,7 +27,7 @@ pipeline {
                         id: 'approval', 
                         message: 'Do you approve the release?', 
                         parameters: [
-                            [$class: 'ChoiceParameterValue', name: 'approve', choices: ['Yes', 'No'], description: 'Select Yes to approve']
+                            [$class: 'StringParameterValue', name: 'approve', value: '', description: 'Select Yes to approve']
                         ]
                     )
                     if (approval.approve != 'Yes') {
