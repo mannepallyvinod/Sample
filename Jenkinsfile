@@ -20,7 +20,7 @@ pipeline {
                         to: "vinod199733@gmail.com.com",
                         replyTo: "vinodkumarmannepally@gmail.com",
                         mimeType: "text/html"
-                    
+                    def approve = params.approve
                     def approval = input(
                         id: 'approval', 
                         message: 'Do you approve the release?', 
