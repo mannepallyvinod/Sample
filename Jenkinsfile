@@ -13,7 +13,7 @@ pipeline {
         }
         stage('Approval') {
             when {
-                expression { env.APPROVE_EMAIL == 'true' }
+                expression { env.APPROVE_EMAIL == true }
             }
             steps {
                 echo 'Sending approval email...'
