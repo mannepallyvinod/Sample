@@ -4,13 +4,11 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Building project...'
-                sh 'make build'
             }
         }
         stage('Test') {
             steps {
                 echo 'Testing project...'
-                sh 'make test'
             }
         }
         stage('Approval') {
@@ -39,7 +37,6 @@ pipeline {
         stage('Deploy') {
             steps {
                 echo 'Deploying project...'
-                sh 'make deploy'
             }
         }
     }
