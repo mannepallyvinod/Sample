@@ -20,13 +20,12 @@ pipeline {
                         to: "vinod199733@gmail.com.com",
                         replyTo: "vinodkumarmannepally@gmail.com",
                         mimeType: "text/html"
-                    def approve = params.approve
+                    parameters {
+                        booleanParam(name: 'approve', type: 'Boolean', defaultValue: false, description: 'Check this box to approve')
+                    }
                     def approval = input(
                         id: 'approval', 
-                        message: 'Do you approve the release?', 
-                        parameters: [
-                            [$class: 'BooleanParameterDefinition', name: 'approve', type: 'Boolean', defaultValue: false, description: 'Check this box to approve']
-                        ]
+                        message: 'Do you ${params.approve} the release?', 
                     )
                     if (!approval.approve) {
                         error('Release approval not granted.')
