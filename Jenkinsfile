@@ -17,7 +17,7 @@ pipeline {
                 script {
                     emailext body: "Please approve the release.",
                         subject: "Release Approval Request",
-                        to: "vinod199733@gmail.com.com",
+                        to: "vinod199733@gmail.com",
                         replyTo: "vinodkumarmannepally@gmail.com",
                         mimeType: "text/html"
                     parameters {
