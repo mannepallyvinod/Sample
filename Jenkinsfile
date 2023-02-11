@@ -1,42 +1,30 @@
 pipeline {
     agent any
+
     stages {
-        stage('Build') {
+        stage("Build") {
             steps {
-                echo 'Building project...'
+                echo "Building..."
             }
         }
-        stage('Test') {
+        stage("Approval") {
             steps {
-                echo 'Testing project...'
-            }
-        }
-        stage('Approval') {
-            steps {
-                echo 'Sending approval email...'
                 script {
-                    emailext body: "Please approve the release.",
-                        subject: "Release Approval Request",
-                        to: "vinod199733@gmail.com",
-                        replyTo: "vinodkumarmannepally@gmail.com",
-                        mimeType: "text/html"
-                    
-                    def approval = input(
-                        id: 'approval', 
-                        message: 'Do you ${params.approve} the release?', 
-                        parameters: [
-                            [$class: 'BooleanParameterDefinition', name: 'approve', type: 'Boolean', defaultValue: false, description: 'Check this box to approve']
-                        ]
-                    )
-                    if (!approval.approve) {
-                        error('Release approval not granted.')
+                    def approver = "vinod199733@gmail.com"
+                    if (env.BRANCH_NAME == "master") {
+                        mail to: approver,
+                             subject: "Approval Needed: ${env.JOB_NAME}",
+                             body: "Please approve this build: ${env.BUILD_URL}"
                     }
                 }
             }
         }
-        stage('Deploy') {
+        stage("Deploy") {
+            when {
+                expression { env.APPROVE == "yes" }
+            }
             steps {
-                echo 'Deploying project...'
+                echo "Deploying..."
             }
         }
     }
