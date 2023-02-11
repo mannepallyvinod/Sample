@@ -24,9 +24,9 @@ pipeline {
                     def approval = input(
                         id: 'approval', 
                         message: 'Do you ${params.approve} the release?', 
-                        parameters {
+                        parameters: [
                         booleanParam(name: 'approve', type: 'Boolean', defaultValue: false, description: 'Check this box to approve')
-                        }
+                        ]
                     )
                     if (!approval.approve) {
                         error('Release approval not granted.')
